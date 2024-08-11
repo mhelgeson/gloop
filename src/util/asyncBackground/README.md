@@ -28,11 +28,12 @@ An async function (returns a promise) that invokes in a bg worker.
 
 ```js
 // wrap a recursive fibonacci calculator to run in a worker
-const fibonacci = asyncBackground(function fib(num) {
-  return (memo[num] = memo[num] ?? (
-    num <= 1 ? num : fib(num - 1) + fib(num - 2)
-  );
-},["const memo = {}"]);
+const fibonacci = asyncBackground(
+  function fib(num) {
+    return (memo[num] = memo[num] ?? (num <= 1 ? num : fib(num - 1) + fib(num - 2)));
+  },
+  ["const memo = {}"],
+);
 
 // await the promised result from the worker
 const val = await fibonacci(42); // 267914296

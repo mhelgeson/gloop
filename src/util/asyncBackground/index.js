@@ -21,14 +21,19 @@ const asyncBackground = (func, deps = []) => {
   // create background worker
   const worker = new Worker(url);
   URL.revokeObjectURL(url);
-  // terminate on next tick for uncaught exceptions
-  worker.onerror = () => setTimeout(() => worker.terminate(), 1);
+  const terminate = () => {
+    // overwrite postMessage to throw error on terminated worker
+    worker.postMessage = () => {
+      throw new Error("worker terminated");
+    };
+    return worker.terminate();
+  };
   // worker promise factory
   return (...args) =>
     new Promise((resolve, reject) => {
       // allow a special arg to shut down worker
       if (args.length === 1 && args[0] === SIGTERM) {
-        resolve(worker.terminate());
+        resolve(terminate());
       }
       // listen and message the worker
       const id = guid();
@@ -40,6 +45,11 @@ const asyncBackground = (func, deps = []) => {
         }
       };
       worker.addEventListener("message", handler);
+      // terminate on uncaught exceptions
+      worker.addEventListener("error", (err) => {
+        terminate();
+        reject(err);
+      });
       worker.postMessage({ id, args });
     });
 };
