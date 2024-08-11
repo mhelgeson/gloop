@@ -1,9 +1,9 @@
 # util/makeGuid
 
-Create a function to issue globally unique identifiers. It is based on the 
-current performance time in milliseconds (to make it hard to guess) and a 
-counter (for uniqueness) and can include an optional prefix (for scoping). The 
-generated guids are only unique within the scope of a single page session and 
+Create a function to issue globally unique identifiers. It is based on the
+current performance time in milliseconds (to make it hard to guess) and a
+counter (for uniqueness) and can include an optional prefix (for scoping). The
+generated guids are only unique within the scope of a single page session and
 are not cryptographically secure.
 
 ## Syntax

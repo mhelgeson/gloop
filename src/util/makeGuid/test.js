@@ -1,8 +1,7 @@
-import makeGuid from './index';
+import makeGuid from "./index";
 
-describe('util/makeGuid', () => {
-
-  it('should use default prefix to create guids', () => {
+describe("util/makeGuid", () => {
+  it("should use default prefix to create guids", () => {
     const guid = makeGuid();
     const pattern = /^guid-[a-z0-9]+-[a-z0-9]+$/;
     const id1 = guid();
@@ -12,7 +11,7 @@ describe('util/makeGuid', () => {
     expect(id1).not.toEqual(id2);
   });
 
-  it('should use custom prefix to create guids', () => {
+  it("should use custom prefix to create guids", () => {
     const guid = makeGuid("abc");
     const pattern = /^abc-[a-z0-9]+-[a-z0-9]+$/;
     const id1 = guid();
@@ -22,13 +21,12 @@ describe('util/makeGuid', () => {
     expect(id1).not.toEqual(id2);
   });
 
-  it('should always create unique guids, even with duplicate factories', () => {
-      const lookup = new Set();
-      for (let i = 0; i < 100; i++) {
-        const id = makeGuid()();
-        expect(lookup.has(id)).toEqual(false);
-        lookup.add(id);
-      }
-    });
-
+  it("should always create unique guids, even with duplicate factories", () => {
+    const lookup = new Set();
+    for (let i = 0; i < 100; i++) {
+      const id = makeGuid()();
+      expect(lookup.has(id)).toEqual(false);
+      lookup.add(id);
+    }
+  });
 });

@@ -13,10 +13,10 @@ function hsl2rgb(hue, sat, lum) {
       6 * h < 1
         ? y + (x - y) * 6 * h
         : 2 * h < 1
-        ? x
-        : 3 * h < 2
-        ? y + (x - y) * (2 / 3 - h) * 6
-        : y;
+          ? x
+          : 3 * h < 2
+            ? y + (x - y) * (2 / 3 - h) * 6
+            : y;
     return Math.ceil(255 * h);
   };
   return [hue2rgb(hue + 1 / 3), hue2rgb(hue), hue2rgb(hue - 1 / 3)];

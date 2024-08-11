@@ -12,7 +12,7 @@ import hsl2rgb from "../../src/util/color/hsl2rgb";
 const game = new Gloop();
 game.plugin(debug, {
   omit: ["loop_logic"],
-  overlay_styles: { display: "none" }
+  overlay_styles: { display: "none" },
 });
 game.plugin(scene);
 game.plugin(localStore, {
@@ -21,12 +21,12 @@ game.plugin(localStore, {
     height: 500,
     seed: "",
     octaves: 1,
-    amplitude: .5,
+    amplitude: 0.5,
     frequency: 1,
-    gain: .5,
+    gain: 0.5,
     lacunarity: 1,
-    mode: "grayscale"
-  }
+    mode: "grayscale",
+  },
 });
 
 game.scene.create("main", () => {
@@ -95,13 +95,13 @@ game.scene.create("main", () => {
     </div>
   `).appendTo(document.body);
 
-  $("#noise-wrap input[type=text]").on("change", ev => {
+  $("#noise-wrap input[type=text]").on("change", (ev) => {
     const key = ev.target.id.split("-").pop();
     const value = ev.target.value;
     game.set(key, value);
   });
 
-  $("#input-mode").on("change", ev => {
+  $("#input-mode").on("change", (ev) => {
     const key = ev.target.id.split("-").pop();
     const value = ev.target.value;
     game.set(key, value);
@@ -116,11 +116,11 @@ game.scene.create("main", () => {
     "frequency",
     "gain",
     "lacunarity",
-    "mode"
+    "mode",
   ];
 
   // initialize the inputs
-  fields.forEach(key => {
+  fields.forEach((key) => {
     $(`#input-${key}`)[0].value = game.get(key);
   });
 
@@ -151,82 +151,91 @@ game.scene.create("main", () => {
     // restore button
     $button[0].disabled = false;
     $button[0].value = "RENDER";
-    $("#noise-time").html(`${(Date.now()-time)/1e3} sec`)
+    $("#noise-time").html(`${(Date.now() - time) / 1e3} sec`);
   };
 
   // render noise image data in a bg worker thread
-  const renderNoise = asyncBackground(opts => {
-    // configure noise function
-    const noise = makeNoise(opts);
-    // set canvas dimensions
-    const { width: w, height: h } = opts;
-    const canvas = new OffscreenCanvas(w, h);
-    const ctx = canvas.getContext("2d");
-    // render the canvas image data
-    const imageData = ctx.createImageData(w, h);
-    const len = imageData.data.length;
-    for (let i = 0; i < len; i += 4) {
-      // compute coords
-      const x = (i % (w * 4)) / 4;
-      const y = Math.floor(i / (w * 4));
-      // determine color output
-      const n = noise(x / w, y / h);
-      let r = 255, g = 255, b = 255, hue = 0, sat = 0, lum = 0;
-      switch (opts.mode){
-        case "marble":
-          hue = 0;
-          sat = 0;
-          lum = Math.abs(n) * 500;
-          [r, g, b] = hsl2rgb(hue, sat, lum);
-          break;
-        case "blue-green":
-          hue = n > 0 ? 240 : 240;
-          sat = n > 0 ? 75 : 100;
-          lum = 100 - Math.abs(n) * 50;
-          [r, g, b] = hsl2rgb(hue, sat, lum);
-          break;
-        case "clouds":
-          hue = 240;
-          sat = 100;
-          lum = 50 + ((n+1)/2) * 50;
-          [r, g, b] = hsl2rgb(hue, sat, lum);
-          break;
-        case "warm-hues":
-          hue = 60 * n;
-          sat = 100;
-          lum = 50 + 50 * n;
-          [r, g, b] = hsl2rgb(hue, sat, lum);
-          break;
-        case "cool-hues":
-          hue = 240 + 60 * n;
-          sat = 100;
-          lum = 25 + 50 * n;
-          [r, g, b] = hsl2rgb(hue, sat, lum);
-          break;
-        case "purple-haze":
-          r = 128 - 128 * ((n+1)/2);
-          g = 0;
-          b = 255 - 255 * ((n+1)/2);
-          break;
-        case "rainbow":
+  const renderNoise = asyncBackground(
+    (opts) => {
+      // configure noise function
+      const noise = makeNoise(opts);
+      // set canvas dimensions
+      const { width: w, height: h } = opts;
+      const canvas = new OffscreenCanvas(w, h);
+      const ctx = canvas.getContext("2d");
+      // render the canvas image data
+      const imageData = ctx.createImageData(w, h);
+      const len = imageData.data.length;
+      for (let i = 0; i < len; i += 4) {
+        // compute coords
+        const x = (i % (w * 4)) / 4;
+        const y = Math.floor(i / (w * 4));
+        // determine color output
+        const n = noise(x / w, y / h);
+        let r = 255,
+          g = 255,
+          b = 255,
+          hue = 0,
+          sat = 0,
+          lum = 0;
+        switch (opts.mode) {
+          case "marble":
+            hue = 0;
+            sat = 0;
+            lum = Math.abs(n) * 500;
+            [r, g, b] = hsl2rgb(hue, sat, lum);
+            break;
+          case "blue-green":
+            hue = n > 0 ? 240 : 240;
+            sat = n > 0 ? 75 : 100;
+            lum = 100 - Math.abs(n) * 50;
+            [r, g, b] = hsl2rgb(hue, sat, lum);
+            break;
+          case "clouds":
+            hue = 240;
+            sat = 100;
+            lum = 50 + ((n + 1) / 2) * 50;
+            [r, g, b] = hsl2rgb(hue, sat, lum);
+            break;
+          case "warm-hues":
+            hue = 60 * n;
+            sat = 100;
+            lum = 50 + 50 * n;
+            [r, g, b] = hsl2rgb(hue, sat, lum);
+            break;
+          case "cool-hues":
+            hue = 240 + 60 * n;
+            sat = 100;
+            lum = 25 + 50 * n;
+            [r, g, b] = hsl2rgb(hue, sat, lum);
+            break;
+          case "purple-haze":
+            r = 128 - 128 * ((n + 1) / 2);
+            g = 0;
+            b = 255 - 255 * ((n + 1) / 2);
+            break;
+          case "rainbow":
             hue = 360 * n;
             sat = 100;
             lum = 50;
             [r, g, b] = hsl2rgb(hue, sat, lum);
             break;
-        case "grayscale": default:
-          r = g = b = 255 * ((n+1)/2);
-          break;
+          case "grayscale":
+          default:
+            r = g = b = 255 * ((n + 1) / 2);
+            break;
+        }
+        // update pixel color
+        imageData.data[i + 0] = r;
+        imageData.data[i + 1] = g;
+        imageData.data[i + 2] = b;
+        imageData.data[i + 3] = 255;
       }
-      // update pixel color
-      imageData.data[i + 0] = r;
-      imageData.data[i + 1] = g;
-      imageData.data[i + 2] = b;
-      imageData.data[i + 3] = 255;
-    }
-    return imageData;
-  // include these dependencies
-  }, [makeNoise, makeRandom, hsl2rgb]);
+      return imageData;
+      // include these dependencies
+    },
+    [makeNoise, makeRandom, hsl2rgb],
+  );
 
   updateCanvas();
 });

@@ -1,5 +1,5 @@
-import divide from '../divide';
-import fromScalar from '../fromScalar';
+import divide from "../divide";
+import fromScalar from "../fromScalar";
 
 const vectorNormalize = (a) => {
   a = fromScalar(a, "vector/normalize[0]");

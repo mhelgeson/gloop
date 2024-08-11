@@ -48,14 +48,10 @@ $dom.prototype = {
     return this; // chain
   },
   on: function (type, listener) {
-    return this.forEach((elem) =>
-      elem.addEventListener(type, listener)
-    );
+    return this.forEach((elem) => elem.addEventListener(type, listener));
   },
-  off: function(type, listener) {
-    return this.forEach(elem =>
-      elem.removeEventListener(type, listener)
-    );
+  off: function (type, listener) {
+    return this.forEach((elem) => elem.removeEventListener(type, listener));
   },
   attr: function (...args) {
     const [name, value] = args;
@@ -76,23 +72,23 @@ $dom.prototype = {
     }
     return this.forEach((elem) => (elem.style[name] = value));
   },
-  show: function() {
+  show: function () {
     return this.css("display", "block");
   },
-  hide: function() {
+  hide: function () {
     return this.css("display", "none");
   },
-  hasClass: function(...args) {
-    return this.forEach(elem => elem.classList.contains(...args));
+  hasClass: function (...args) {
+    return this.forEach((elem) => elem.classList.contains(...args));
   },
-  addClass: function(...args) {
-    return this.forEach(elem => elem.classList.add(...args));
+  addClass: function (...args) {
+    return this.forEach((elem) => elem.classList.add(...args));
   },
-  removeClass: function(...args) {
-    return this.forEach(elem => elem.classList.remove(...args));
+  removeClass: function (...args) {
+    return this.forEach((elem) => elem.classList.remove(...args));
   },
-  toggleClass: function(...args) {
-    return this.forEach(elem => elem.classList.toggle(...args));
+  toggleClass: function (...args) {
+    return this.forEach((elem) => elem.classList.toggle(...args));
   },
   appendTo: function (parent) {
     return this.forEach((node) => parent.appendChild(node));

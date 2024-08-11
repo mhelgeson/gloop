@@ -1,6 +1,6 @@
-import vector from '.';
+import vector from ".";
 
-describe('util/vector - optional static interface', () => {
+describe("util/vector - optional static interface", () => {
   test.each([
     ["add"],
     ["angle"],

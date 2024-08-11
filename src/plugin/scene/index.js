@@ -11,7 +11,7 @@ const { STATE_CHANGE, SCENE_LEAVE, SCENE_ENTER } = constants;
 // state strings
 const { SCENE } = constants;
 
-export default function plugin_scene (options) {
+export default function plugin_scene(options) {
   const scenes = new Map();
 
   // default listeners
@@ -45,7 +45,6 @@ export default function plugin_scene (options) {
     },
     set: (name) => {
       this.set(SCENE, name);
-    }
-  }
-
+    },
+  };
 }

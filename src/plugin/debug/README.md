@@ -19,5 +19,3 @@ plugin that helps modify and inspect state and controls
 ## state
 
 - "debug" = true
-
-

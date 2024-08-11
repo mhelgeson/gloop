@@ -30,5 +30,3 @@ game.scene.create("success", () => {
 // run it
 game.scene.set("mainmenu");
 game.start();
-
-

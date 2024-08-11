@@ -3,8 +3,9 @@
 A factory to create a pseudo random number generator for predictable output
 
 ## Syntax
+
 ```js
-makeRandom(seed)
+makeRandom(seed);
 ```
 
 ## Parameters
@@ -15,31 +16,31 @@ makeRandom(seed)
 
 ## Returns
 
-A function to create random numbers, which accepts two optional params to 
-determine the range of the output. The order of higher/lower values does not 
+A function to create random numbers, which accepts two optional params to
+determine the range of the output. The order of higher/lower values does not
 matter.
 
 <ul>
 
-  ### Syntax
+### Syntax
 
-  ```js
-  random(a, b)
-  ```
+```js
+random(a, b);
+```
 
-  ### Parameters
+### Parameters
 
-  - `a` (Number/float, default 1)
+- `a` (Number/float, default 1)
 
-    A number to determine the upper or lower limit of the output.
+  A number to determine the upper or lower limit of the output.
 
-  - `b` (Number/float, default 0)
+- `b` (Number/float, default 0)
 
-    A number to determine the upper or lower limit of the output.
+  A number to determine the upper or lower limit of the output.
 
-  ### Returns
+### Returns
 
-  Number/float, range `a` to `b`
+Number/float, range `a` to `b`
 
 </ul>
 
@@ -65,4 +66,4 @@ const num3 = random(Math.E, Math.PI); // 3.042387672531788
 
 ## References
 
-- 
+-

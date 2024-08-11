@@ -16,11 +16,10 @@ const {
   TIMEWARP,
   PAUSED,
   STOPPED,
-  CLOCK
+  CLOCK,
 } = constants;
 
 export default class Gloop {
-
   // initialize default state
   state = {
     __proto__: null,
@@ -46,10 +45,10 @@ export default class Gloop {
     });
   }
 
-  plugin (initializer, options){
+  plugin(initializer, options) {
     const result = initializer.call(this, options || {});
     // optionally assign named return values
-    if (result?.name){
+    if (result?.name) {
       this[result.name] = result;
     }
     return this;
@@ -79,14 +78,14 @@ export default class Gloop {
   }
 
   // advance without looping
-  step(tick=1){
+  step(tick = 1) {
     this.logic(tick);
     this.paint(tick);
   }
 
   // starts the two main game loops
   start() {
-    if (this.get(STOPPED) === true){
+    if (this.get(STOPPED) === true) {
       // reset clock value, speed, direction
       this.set(CLOCK, 0);
       // reset loop and time state
@@ -115,7 +114,7 @@ export default class Gloop {
   }
 
   // add an event listener
-  on(type, listener, pre=false) {
+  on(type, listener, pre = false) {
     if (!this.listeners.has(type)) {
       this.listeners.set(type, []);
     }
@@ -128,14 +127,13 @@ export default class Gloop {
   // remove event listeners
   off(type, listener) {
     if (this.listeners.has(type)) {
-      if (listener == null){
+      if (listener == null) {
         // remove all listeners
         this.listeners.delete(type);
-      }
-      else {
+      } else {
         let list = this.listeners.get(type);
         // remove matching listeners
-        list = list.filter(saved => saved !== listener);
+        list = list.filter((saved) => saved !== listener);
         this.listeners.set(type, list);
       }
     }
@@ -145,9 +143,10 @@ export default class Gloop {
   emit(type, data) {
     if (this.listeners.has(type) || this.listeners.has(WILDCARD)) {
       // invoke listener on next tick...
-      const propagate = listener => setTimeout(() => {
-        listener.call(this, { ...data, type });
-      }, 0);
+      const propagate = (listener) =>
+        setTimeout(() => {
+          listener.call(this, { ...data, type });
+        }, 0);
       this.listeners.get(WILDCARD)?.forEach(propagate); // wildcard
       this.listeners.get(type)?.forEach(propagate);
     }
@@ -156,8 +155,8 @@ export default class Gloop {
   // set game state value
   set(key, value) {
     // assign each prop to state
-    if (arguments.length === 1){
-      Object.keys(key).forEach(k => this.set(k, key[k]));
+    if (arguments.length === 1) {
+      Object.keys(key).forEach((k) => this.set(k, key[k]));
     }
     if (this.get(key) !== value) {
       this.emit(STATE_CHANGE, { key, value, previous: this.state[key] });
@@ -169,5 +168,4 @@ export default class Gloop {
   get(key) {
     return key ? this.state[key] : { ...this.state };
   }
-
 }

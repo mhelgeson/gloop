@@ -8,7 +8,6 @@ function Canvas(width, height) {
 }
 
 Canvas.prototype = {
-
   // apply dimensions
   size: function (width, height) {
     // set scale factor based on device
@@ -29,23 +28,11 @@ Canvas.prototype = {
     return this;
   },
   clear: function (x, y, w, h) {
-    this.ctx.clearRect(
-      x || 0,
-      y || 0,
-      w || this.pos.w,
-      h || this.pos.h
-    );
+    this.ctx.clearRect(x || 0, y || 0, w || this.pos.w, h || this.pos.h);
     return this;
   },
   circ: function (r, x, y) {
-    this.ctx.arc(
-      x || this.pos.x,
-      y || this.pos.y,
-      r,
-      0,
-      2 * Math.PI,
-      false
-    );
+    this.ctx.arc(x || this.pos.x, y || this.pos.y, r, 0, 2 * Math.PI, false);
     return this;
   },
   rect: function (x, y, w, h) {
@@ -53,7 +40,7 @@ Canvas.prototype = {
       x || this.pos.x,
       y || this.pos.y,
       w || this.pos.w,
-      h || this.pos.h
+      h || this.pos.h,
     );
     return this;
   },

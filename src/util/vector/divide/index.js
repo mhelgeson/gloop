@@ -8,10 +8,10 @@ const vectorDivide = (a, b) => {
 };
 
 const notZero = (value) => {
-  if (value === 0){
+  if (value === 0) {
     throw new Error(`CannotDivideByZero in vectorDivide`);
   }
   return value;
-}
+};
 
-export default vectorDivide
+export default vectorDivide;

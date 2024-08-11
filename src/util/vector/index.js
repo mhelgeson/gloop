@@ -24,7 +24,7 @@ const vector = {
   length,
   multiply,
   normalize,
-  subtract
+  subtract,
 };
 
 export default vector;

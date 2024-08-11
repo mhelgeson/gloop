@@ -19,7 +19,7 @@ import vNormalize from "../../src/util/vector/normalize";
 import vSubtract from "../../src/util/vector/subtract";
 
 // primary game instance, with extensions
-const game = new Gloop()
+const game = new Gloop();
 game.plugin(debug);
 game.plugin(scene);
 game.plugin(viewport);
@@ -34,8 +34,7 @@ const size = 20;
 
 // build the game
 game.scene.create("bloopers", () => {
-
-  const {w, h} = game.get("viewport");
+  const { w, h } = game.get("viewport");
   const canvas = new Canvas(w, h);
   document.body.appendChild(canvas.canvas);
 
@@ -47,7 +46,7 @@ game.scene.create("bloopers", () => {
       x: Math.round(random(w)),
       y: Math.round(random(h)),
       vx: Math.round(random(-10, 10)),
-      vy: Math.round(random(-10, 10))
+      vy: Math.round(random(-10, 10)),
     });
     game.sprites.add(entity);
   }
@@ -64,15 +63,15 @@ game.scene.create("bloopers", () => {
   // }
 
   game.on("loop_logic", ({ tick }) => {
-    if (game.get("paused")){
+    if (game.get("paused")) {
       return;
     }
 
     // detect collisions
     const pairs_map = {};
-    game.sprites.forEach(sprite => {
+    game.sprites.forEach((sprite) => {
       // detect collisions
-      game.sprites.neighbors(sprite).forEach(other => {
+      game.sprites.neighbors(sprite).forEach((other) => {
         let a = sprite.id < other.id ? sprite : other;
         let b = sprite.id < other.id ? other : sprite;
         let key = `${a.id}:${b.id}`;
@@ -99,7 +98,10 @@ game.scene.create("bloopers", () => {
           return;
         }
         // Calculate impulse vector
-        const impulse = vMultiply(npos, 2 * speed / ( 1/a.mass + 1/b.mass ));
+        const impulse = vMultiply(
+          npos,
+          (2 * speed) / (1 / a.mass + 1 / b.mass),
+        );
         // apply (repelling) impulse
         a.vel = vSubtract(a.vel, vDivide(impulse, a.mass));
         b.vel = vAdd(b.vel, vDivide(impulse, b.mass));
@@ -109,12 +111,12 @@ game.scene.create("bloopers", () => {
 
   canvas.ctx.save();
   game.on("loop_paint", () => {
-    if (game.get("paused")){
+    if (game.get("paused")) {
       return;
     }
     canvas.clear();
 
-    game.sprites.forEach(ball => {
+    game.sprites.forEach((ball) => {
       ball.render(canvas);
     });
   });
@@ -125,7 +127,7 @@ const gravity = vCreate(0, 0); // 200
 class Ball {
   static guid = 0;
 
-  constructor(params, parent_node){
+  constructor(params, parent_node) {
     const {
       mass, // mass
       d = 30, // diameter
@@ -136,11 +138,11 @@ class Ball {
     } = params;
     this.id = Ball.guid++;
     // radius
-    let r = this.r = d/2;
+    let r = (this.r = d / 2);
     // diameter
     this.d = d;
     // mass
-    this.mass = mass ?? (Math.PI * r * r);
+    this.mass = mass ?? Math.PI * r * r;
     // position
     this.pos = vCreate(x, y);
     // velocity
@@ -152,7 +154,7 @@ class Ball {
   // add force to the acceleration
 
   // Force = mass * acc
-  applyForce(acc, time){
+  applyForce(acc, time) {
     // accommodate mass
     let force = vMultiply(acc, this.mass);
     // acceleration delta
@@ -162,21 +164,21 @@ class Ball {
   }
 
   // apply change in velocity
-  updateVel(time){
+  updateVel(time) {
     // velocity = acceleration * time
     let delta = vMultiply(this.acc, time);
     this.vel = vAdd(this.vel, delta);
   }
 
   // apply change in position
-  updatePos(time){
+  updatePos(time) {
     // position = velocity * time
     let delta = vMultiply(this.vel, time);
     this.pos = vAdd(this.pos, delta);
   }
 
-  onLogic({ tick }){
-    if (game.get("paused")){
+  onLogic({ tick }) {
+    if (game.get("paused")) {
       return;
     }
     this.updateVel(tick);
@@ -197,48 +199,51 @@ class Ball {
   }
 
   // reflection boundaries
-  collideWalls(){
-    const {w, h} = game.get("viewport");
+  collideWalls() {
+    const { w, h } = game.get("viewport");
     const timeForward = game.get("timewarp") > 0;
     let { pos, vel, r } = this;
     // clamp within container bounds
     pos = vCreate(
-      Math.max(r, Math.min(w-r, pos.x)),
-      Math.max(r, Math.min(h-r, pos.y))
+      Math.max(r, Math.min(w - r, pos.x)),
+      Math.max(r, Math.min(h - r, pos.y)),
     );
-    if (timeForward === true){
-      if ((pos.x >= w-r && vel.x > 0) || (pos.x <= r && vel.x < 0)) {
+    if (timeForward === true) {
+      if ((pos.x >= w - r && vel.x > 0) || (pos.x <= r && vel.x < 0)) {
         vel = vMultiply(vel, { x: -1, y: 1 });
       }
-      if ((pos.y >= h-r && vel.y > 0) || (pos.y <= r && vel.y < 0)) {
+      if ((pos.y >= h - r && vel.y > 0) || (pos.y <= r && vel.y < 0)) {
         vel = vMultiply(vel, { x: 1, y: -1 });
       }
     }
-    if (timeForward === false){
-      if ((pos.x >= w-r && vel.x < 0) || (pos.x <= r && vel.x > 0)) {
+    if (timeForward === false) {
+      if ((pos.x >= w - r && vel.x < 0) || (pos.x <= r && vel.x > 0)) {
         vel = vMultiply(vel, { x: -1, y: 1 });
       }
-      if ((pos.y >= h-r && vel.y < 0) || (pos.y <= r && vel.y > 0)) {
+      if ((pos.y >= h - r && vel.y < 0) || (pos.y <= r && vel.y > 0)) {
         vel = vMultiply(vel, { x: 1, y: -1 });
       }
     }
     this.vel = vel;
     this.pos = pos;
   }
-  color(x, y){
-    const {w, h} = game.get("viewport");
+  color(x, y) {
+    const { w, h } = game.get("viewport");
     // resolve position to a grid percentage
-    x = Math.round(x/size) / Math.round(w/size);
-    y = Math.round(y/size) / Math.round(h/size);
+    x = Math.round(x / size) / Math.round(w / size);
+    y = Math.round(y / size) / Math.round(h / size);
     let n = Math.round(noise(x, y) * 240);
     return `hsla(${n},100%,50%,.5)`;
   }
 
-  render(canvas){
-    const { r, pos: { x, y} } = this;
+  render(canvas) {
+    const {
+      r,
+      pos: { x, y },
+    } = this;
     canvas.ctx.beginPath();
     canvas
-      .circ(r-1, x, y)
+      .circ(r - 1, x, y)
       .fill(this.color(x, y))
       .stroke("#888", 2);
     canvas.ctx.closePath();

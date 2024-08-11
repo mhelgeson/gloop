@@ -5,7 +5,7 @@ import assertNumber from "../../assertNumber";
 const vectorLength = (a, len) => {
   // getter...
   a = fromScalar(a, "vector/length[0]");
-  if (typeof len === "undefined"){
+  if (typeof len === "undefined") {
     return Math.sqrt(a.x ** 2 + a.y ** 2);
   }
   // setter...

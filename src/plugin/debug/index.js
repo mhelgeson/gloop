@@ -13,7 +13,7 @@ const { STATE_CHANGE, LOOP_LOGIC, LOOP_PAINT, WILDCARD } = constants;
 // state strings
 const { DEBUG, TIMEWARP, PAUSED, STOPPED, CLOCK } = constants;
 
-export default function plugin_debug (options) {
+export default function plugin_debug(options) {
   // merge defaults and options
   const opts = { ...plugin_debug.defaults, ...options };
 
@@ -27,7 +27,7 @@ export default function plugin_debug (options) {
   this.on(WILDCARD, ({ type, ...props }) => {
     if (OMIT.has(type) !== true) {
       const style = opts.styles[type.split("_").shift()] || opts.styles.default;
-      console.groupCollapsed(`${opts.id} %c${type}`.trim(), style,  props);
+      console.groupCollapsed(`${opts.id} %c${type}`.trim(), style, props);
       console.table(this.state);
       console.groupEnd();
     }
@@ -80,7 +80,7 @@ export default function plugin_debug (options) {
   let logic_time = 1;
   let logic_frames = 200;
   this.on(LOOP_LOGIC, ({ tick }) => {
-    logic_time += tick/this.get(TIMEWARP);
+    logic_time += tick / this.get(TIMEWARP);
     logic_frames += 1;
   });
 
@@ -88,14 +88,14 @@ export default function plugin_debug (options) {
   let paint_frames = 60;
 
   this.on(LOOP_PAINT, ({ tick }) => {
-    paint_time += tick/this.get(TIMEWARP);
+    paint_time += tick / this.get(TIMEWARP);
     paint_frames += 1;
-    if (paint_time > opts.fps_sample){
+    if (paint_time > opts.fps_sample) {
       $paint.html(`${Math.round(paint_frames / paint_time)} fps`);
       paint_time = 0;
       paint_frames = 0;
     }
-    if (logic_time > opts.fps_sample){
+    if (logic_time > opts.fps_sample) {
       $logic.html(`${Math.round(logic_frames / logic_time)} fps`);
       logic_time = 0;
       logic_frames = 0;
@@ -108,21 +108,17 @@ export default function plugin_debug (options) {
 
 plugin_debug.defaults = {
   id: "",
-  omit: [
-    LOOP_LOGIC,
-    LOOP_PAINT,
-    STATE_CHANGE
-  ],
+  omit: [LOOP_LOGIC, LOOP_PAINT, STATE_CHANGE],
   styles: {
-    loop: 'background:#FCF',
-    clock: 'background:#FCC',
-    state: 'background:#FFC',
-    scene: 'background:#CFC',
-    viewport: 'background:#CFF',
-    default: 'background:#CCF',
+    loop: "background:#FCF",
+    clock: "background:#FCC",
+    state: "background:#FFC",
+    scene: "background:#CFC",
+    viewport: "background:#CFF",
+    default: "background:#CCF",
   },
   // fps calculation
-  fps_sample: .25,
+  fps_sample: 0.25,
   overlay_markup: `
     <div>
       <table>
@@ -169,7 +165,6 @@ plugin_debug.defaults = {
     borderRadius: "4px",
     background: "rgba(255,255,255,.75)",
     padding: "4px",
-    zIndex: "9999"
-  }
+    zIndex: "9999",
+  },
 };
-

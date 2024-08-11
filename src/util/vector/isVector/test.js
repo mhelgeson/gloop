@@ -1,6 +1,6 @@
 import isVector from ".";
 
-describe('vector/isVector', () => {
+describe("vector/isVector", () => {
   const cases = [
     ["numeric string is not a vector", "123", false],
     ["alpha string is not a vector", "abc", false],
@@ -12,7 +12,11 @@ describe('vector/isVector', () => {
     ["empty object is not a vector", {}, false],
     ["object with only 'x' is not a vector", { x: 123 }, false],
     ["object with only 'y' is not a vector", { y: 123 }, false],
-    ["object with non-numeric 'x' or 'y' is not a vector", { x: 1, y: "m" }, false],
+    [
+      "object with non-numeric 'x' or 'y' is not a vector",
+      { x: 1, y: "m" },
+      false,
+    ],
     ["object with numeric 'x' & 'y' is a vector", { x: 123, y: 456 }, true],
   ];
   test.each(cases)("%s", (desc, value, expected) => {

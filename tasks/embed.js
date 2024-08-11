@@ -10,14 +10,14 @@ const output = [
 
 const css = child_process.execSync(`postcss ./demo/${demo}/style.css`);
 if (css) {
-  output.push('<style>',css,'</style>');
+  output.push("<style>", css, "</style>");
 }
 
 output.push("</head><body>");
 
 const js = child_process.execSync(`rollup -c -i ./demo/${demo}/index.js`);
 if (js) {
-  output.push('<script>',js,'</script>');
+  output.push("<script>", js, "</script>");
 }
 
 output.push("</body></html>");

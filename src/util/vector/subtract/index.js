@@ -7,4 +7,4 @@ const vectorSubtract = (a, b) => {
   return create(a.x - b.x, a.y - b.y);
 };
 
-export default vectorSubtract
+export default vectorSubtract;

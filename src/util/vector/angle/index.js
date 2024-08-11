@@ -5,7 +5,7 @@ import assertNumber from "../../assertNumber";
 const vectorAngle = (a, rad) => {
   // getter...
   a = fromScalar(a, "vector/angle[0]");
-  if (typeof rad === "undefined"){
+  if (typeof rad === "undefined") {
     return Math.atan2(a.x, a.y);
   }
   // setter...

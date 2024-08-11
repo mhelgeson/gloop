@@ -1,6 +1,6 @@
-import { jest } from '@jest/globals';
-import Gloop from '../Gloop';
-import constants from '../constants';
+import { jest } from "@jest/globals";
+import Gloop from "../Gloop";
+import constants from "../constants";
 
 const {
   // event strings
@@ -17,10 +17,10 @@ const {
   TIMEWARP,
   PAUSED,
   STOPPED,
-  CLOCK
+  CLOCK,
 } = constants;
 
-describe('Gloop', () => {
+describe("Gloop", () => {
   let gloop;
 
   beforeEach(() => {
@@ -32,26 +32,28 @@ describe('Gloop', () => {
     gloop.stop();
   });
 
-  describe('constructor', () => {
+  describe("constructor", () => {
     test.each([
       [TIMEWARP, 1],
       [PAUSED, false],
       [STOPPED, true],
-      [CLOCK, 0]
+      [CLOCK, 0],
     ])('initial state "%s" = %s', (key, value) => {
       expect(gloop.get(key)).toBe(value);
     });
   });
 
-  describe('plugin', () => {
+  describe("plugin", () => {
     it("should invoke initializer with correct scope", () => {
       let scope = null;
-      gloop.plugin(function(){ scope = this; });
+      gloop.plugin(function () {
+        scope = this;
+      });
       expect(scope).toBe(gloop);
     });
     it("should pass along options to initializer", () => {
       let options = null;
-      gloop.plugin(arg => options = arg, { foo: 123 });
+      gloop.plugin((arg) => (options = arg), { foo: 123 });
       expect(options).toStrictEqual({ foo: 123 });
     });
     it("should assign initializer return value to scope when 'name' is included", () => {
@@ -61,19 +63,19 @@ describe('Gloop', () => {
     });
   });
 
-  describe('state: get/set', () => {
-    test('set and get state values', async () => {
+  describe("state: get/set", () => {
+    test("set and get state values", async () => {
       const attr = "surge";
       const value = "adhesion";
       gloop.set(attr, value);
       expect(gloop.get(attr)).toBe(value);
     });
 
-    test('set multiple and get all state values', async () => {
+    test("set multiple and get all state values", async () => {
       gloop.set({
         foo1: "bar1",
         foo2: "bar2",
-        foo3: "bar3"
+        foo3: "bar3",
       });
       const state = gloop.get();
       expect(Object.keys(state).length).toBeGreaterThanOrEqual(3);
@@ -100,7 +102,7 @@ describe('Gloop', () => {
     });
   });
 
-  describe('clock: pause/resume/reset', () => {
+  describe("clock: pause/resume/reset", () => {
     test(`emits "${CLOCK_PAUSE}" event on "pause"`, async () => {
       await new Promise((resolve, reject) => {
         const remove_listener = gloop.on(CLOCK_PAUSE, () => {
@@ -137,7 +139,7 @@ describe('Gloop', () => {
     });
   });
 
-  describe('loop: start/stop', () => {
+  describe("loop: start/stop", () => {
     test(`emits "${LOOP_START}" event on "start"`, async () => {
       await new Promise((resolve, reject) => {
         const remove_listener = gloop.on(LOOP_START, () => {
@@ -170,12 +172,12 @@ describe('Gloop', () => {
     });
   });
 
-  describe('loop: step/logic/paint', () => {
+  describe("loop: step/logic/paint", () => {
     test("'step' invokes logic and paint without looping", async () => {
       let logic_tick = 0;
       let paint_tick = 0;
-      gloop.on(LOOP_LOGIC, ({ tick }) => logic_tick += tick);
-      gloop.on(LOOP_PAINT, ({ tick }) => paint_tick += tick);
+      gloop.on(LOOP_LOGIC, ({ tick }) => (logic_tick += tick));
+      gloop.on(LOOP_PAINT, ({ tick }) => (paint_tick += tick));
       gloop.step(); // default is 1 sec
       gloop.step(99);
       // wait for events to be emitted
@@ -193,16 +195,18 @@ describe('Gloop', () => {
         let frame = 0;
         let clock = 0;
         let paused_at = 0;
-        const expected_ticks = [0, 1/201, 1/201, 1/201, 1/201, 1/201];
+        const expected_ticks = [0, 1 / 201, 1 / 201, 1 / 201, 1 / 201, 1 / 201];
         gloop.on(LOOP_LOGIC, ({ tick }) => {
           clock += tick;
-          if (frame === 3){
+          if (frame === 3) {
             gloop.pause();
             paused_at = clock;
           }
-          if (typeof expected_ticks[frame] === "number"){
+          if (typeof expected_ticks[frame] === "number") {
             expect(tick).toBeCloseTo(expected_ticks[frame], 2);
-            expect(gloop.get(CLOCK)).toBeCloseTo(frame <=3 ? clock : paused_at);
+            expect(gloop.get(CLOCK)).toBeCloseTo(
+              frame <= 3 ? clock : paused_at,
+            );
           }
           // cleanup after all expected frames
           else {
@@ -212,7 +216,7 @@ describe('Gloop', () => {
           frame += 1;
         });
         gloop.start();
-        jest.advanceTimersByTime(7e3/201);
+        jest.advanceTimersByTime(7e3 / 201);
       });
     });
 
@@ -220,9 +224,9 @@ describe('Gloop', () => {
       jest.useFakeTimers({ now: new Date() });
       await new Promise((resolve, reject) => {
         let frame = 0;
-        const expected_ticks = [0, 1/60, 1/60];
+        const expected_ticks = [0, 1 / 60, 1 / 60];
         gloop.on(LOOP_PAINT, ({ tick }) => {
-          if (typeof expected_ticks[frame] === "number"){
+          if (typeof expected_ticks[frame] === "number") {
             expect(tick).toBeCloseTo(expected_ticks[frame], 2);
           }
           // cleanup after all expected frames
@@ -233,13 +237,12 @@ describe('Gloop', () => {
           frame += 1;
         });
         gloop.start();
-        jest.advanceTimersByTime(4e3/60);
+        jest.advanceTimersByTime(4e3 / 60);
       });
     });
   });
 
-  describe('event: on/off/emit', () => {
-
+  describe("event: on/off/emit", () => {
     test(`use "on" to register event listener by type`, async () => {
       await new Promise((resolve, reject) => {
         const expected = "surge_bind";
@@ -264,11 +267,15 @@ describe('Gloop', () => {
           resolve();
         });
         // registered 2nd, invoked 1st
-        gloop.on(expected, ({ type }) => {
-          actual_order += "|beta";
-          expect(type).toBe(expected);
-          expect(actual_order).not.toBe(expected_order);
-        }, true); // 3rd arg is "prepend"
+        gloop.on(
+          expected,
+          ({ type }) => {
+            actual_order += "|beta";
+            expect(type).toBe(expected);
+            expect(actual_order).not.toBe(expected_order);
+          },
+          true,
+        ); // 3rd arg is "prepend"
         gloop.emit(expected);
       });
     });
@@ -287,7 +294,7 @@ describe('Gloop', () => {
     test(`use "off" to deregister event listener by type + function`, async () => {
       await new Promise((resolve, reject) => {
         let sequence = "";
-        const handler = ({ char }) => sequence += char;
+        const handler = ({ char }) => (sequence += char);
         gloop.on("handlerA", handler);
         gloop.on("assert", ({ str }) => expect(sequence).toBe(str));
         gloop.on("resolve", () => resolve());
@@ -303,7 +310,7 @@ describe('Gloop', () => {
     test(`use return from "on" to deregister event listener`, async () => {
       await new Promise((resolve, reject) => {
         let sequence = "";
-        const handler = ({ char }) => sequence += char;
+        const handler = ({ char }) => (sequence += char);
         const remove = gloop.on("handlerA", handler);
         gloop.on("assert", ({ str }) => expect(sequence).toBe(str));
         gloop.on("resolve", () => resolve());
@@ -319,7 +326,7 @@ describe('Gloop', () => {
     test(`use "off" to deregister event listener by type`, async () => {
       await new Promise((resolve, reject) => {
         let sequence = "";
-        const handler = ({ char }) => sequence += char;
+        const handler = ({ char }) => (sequence += char);
         gloop.on("handlerA", handler);
         gloop.on("assert", ({ str }) => expect(sequence).toBe(str));
         gloop.on("resolve", () => resolve());
@@ -338,12 +345,9 @@ describe('Gloop', () => {
         gloop.off("handlerA");
         gloop.off();
         expect(true).toBe(true);
-      }
-      catch (ex){
+      } catch (ex) {
         expect(ex.message).toBe(null);
       }
     });
-
   });
-
 });
