@@ -2,6 +2,7 @@ const SHORT = /^#([\da-f]{1})([\da-f]{1})([\da-f]{1})$/i;
 const FULL = /^#([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i;
 
 function hex2rgb(hex) {
+  hex = String(hex).trim();
   // expand hexadecimal shorthand
   const [short, r, g, b] = SHORT.exec(hex) || [];
   if (short) {
@@ -14,6 +15,8 @@ function hex2rgb(hex) {
   }
   // bad input
   else {
-    throw Error(`InvalidColor (hex2rgb): ${hex}`);
+    throw Error(`InvalidColor hex2rgb(${hex})`);
   }
 }
+
+export default hex2rgb;

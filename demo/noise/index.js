@@ -8,6 +8,7 @@ import makeNoise from "../../src/util/makeNoise/index.js";
 import makeRandom from "../../src/util/makeRandom/index.js";
 import asyncBackground from "../../src/util/asyncBackground/index.js";
 import hsl2rgb from "../../src/util/color/hsl2rgb";
+import assertNumber from "../../src/util/assertNumber/index.js";
 
 const game = new Gloop();
 game.plugin(debug, {
@@ -234,7 +235,7 @@ game.scene.create("main", () => {
       return imageData;
       // include these dependencies
     },
-    [makeNoise, makeRandom, hsl2rgb],
+    [makeNoise, makeRandom, hsl2rgb, assertNumber],
   );
 
   updateCanvas();

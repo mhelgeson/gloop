@@ -1,9 +1,11 @@
+import assertNumber from "../../assertNumber";
+
 // convert color hsl components to rgb components
-function hsl2rgb(hue, sat, lum) {
+function hsl2rgb(...args) {
   // make args floats
-  hue = hue / 360;
-  sat = sat / 100;
-  lum = lum / 100;
+  const hue = assertNumber(args[0], "hsl2rgb[0]") / 360;
+  const sat = assertNumber(args[1], "hsl2rgb[1]") / 100;
+  const lum = assertNumber(args[2], "hsl2rgb[2]") / 100;
   // calculate
   const x = lum < 0.5 ? lum * (1 + sat) : lum + sat - sat * lum;
   const y = 2 * lum - x;
