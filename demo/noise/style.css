@@ -1,0 +1,34 @@
+html {
+  min-height: 100%;
+}
+body {
+  font: 14px monospace;
+  color: #333;
+  margin: 0;
+}
+
+input[type-text], select {
+  font: 12px monospace;
+}
+
+input[type-button] {
+  font: 14px monospace;
+  padding: 2px 4px;
+}
+
+#noise-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#noise-wrap td {
+  padding: 5px 10px;
+}
+
+#noise-wrap canvas {
+  border: 1px solid #888;
+  margin: 5px;
+}

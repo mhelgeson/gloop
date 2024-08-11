@@ -1,0 +1,102 @@
+# util/makeNoise
+
+A noise factory to create fractal noise through recursive perlin noise to
+generate smooth patterns, terrains, and natural gradients.
+
+## Syntax
+```js
+makeNoise(options)
+```
+
+## Parameters
+
+- `options`
+
+  - `seed` (String)
+
+    Seed for psuedo random number generation.
+
+  - `octaves` (Number/integer >=1)
+
+    Determines how many layers (recursions) to use. More octaves create more details.
+
+  - `amplitude` (Number >= 0)
+
+    Determines height of features. Higher amplitude increases contrast.
+
+  - `gain` (Number > 0)
+
+    Determines persistence by multiplying the amplitude in each octave.
+
+  - `frequency` (Number >= 0)
+
+    Determines width of features. Smaller values produce wider features, while higher decrease feature width.
+
+  - `lacunarity` (Number > 0)
+
+    Determines choppiness by multiplying the frequency in each octave.
+
+
+## Returns
+
+A function to create `noise(x, y)`
+
+<ul>
+
+  ### Syntax
+
+  ```js
+  noise(x, y)
+  ```
+
+  ### Parameters
+
+  - `x` (Number/float, range 0 to 1)
+
+    Coordinate of horizontal dimension in in 2d space.
+
+  - `y` (Number/float, range 0 to 1)
+
+    Coordinate of vertical dimension in in 2d space.
+
+  ### Returns
+
+  Number/float, range -1 to 1
+
+</ul>
+
+## Example
+
+```js
+// create fractal noise fuction
+const fractalNoise = makeNoise({
+  octaves: 4,
+  amplitude: .5,
+  gain: .5
+  frequency: 2.5,
+  lacunarity: 2.5,
+});
+
+const n = fractalNoise(0.7071, 0.1618);
+
+```
+
+## Notes
+
+- noise function input range is 0 to 1
+- snap input to lower resolution float values for better performance
+- adding octaves produces more detail, but takes longer
+- noise function output range is -1 to 1
+- uses seeded psuedo random numbers for consistent output
+
+## References
+
+- https://joeiddon.github.io/projects/javascript/perlin.html
+- https://gamedev.stackexchange.com/questions/197861/how-to-handle-octave-frequency-in-the-perlin-noise-algorithm
+- https://asserttrue.blogspot.com/2011/12/perlin-noise-in-javascript_31.html
+- https://natureofcode.com/random/#a-smoother-approach-with-perlin-noise
+- https://github.com/processing/p5.js/blob/main/src/math/noise.js
+- https://en.wikipedia.org/wiki/Perlin_noise
+- https://cs.nyu.edu/%7Eperlin/noise/
+- https://en.wikipedia.org/wiki/Fractional_Brownian_motion
+- https://en.wikipedia.org/wiki/Pink_noise

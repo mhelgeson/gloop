@@ -1,0 +1,58 @@
+html {
+  min-height: 100%;
+}
+body {
+  font: 15px monospace;
+  color: #333;
+  margin: 0;
+}
+
+#ttt-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#ttt-message {
+  background: #EEE;
+  border: 1px solid #DDD;
+  border-radius: 5px;
+  text-align: center;
+  padding: 10px;
+  margin-top: 2em;
+  width: 220px;
+}
+
+#ttt-play {
+  float: right;
+}
+#ttt-grid td {
+  border: 3px solid #555;
+  width: 120px;
+  height: 120px;
+  line-height: 120px;
+  text-align: center;
+  font-size: 3em;
+}
+#ttt-grid td:hover {
+  background: #EEE;
+  cursor: pointer;
+}
+
+#ttt-grid tr:first-child td {
+  border-top: 0;
+}
+
+#ttt-grid tr:last-child td {
+  border-bottom: 0;
+}
+
+#ttt-grid td:first-child {
+  border-left: 0;
+}
+
+#ttt-grid td:last-child {
+  border-right: 0;
+}
