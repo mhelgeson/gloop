@@ -24,6 +24,16 @@ gloop.on("state_change", ({ key, value, previous }) => {
   console.log(`State changed: ${key} = ${value} (previous value: ${previous})`);
 });
 
+// update your game at ~200fps 
+game.on("loop_logic", ({ tick }) => {
+  // tick value approx 0.005 (sec)
+});
+
+// render your game at ~60fps (depends on screen/system)
+game.on("loop_paint", ({ tick }) => {
+  // tick value approx 0.017 (sec)
+});
+
 // Start the game loop
 gloop.start();
 
